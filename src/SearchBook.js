@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import serializeForm from 'form-serialize';
+import Book from './Book';
+import * as BooksAPI from './BooksAPI';
 
 class SearchBook extends Component {
   constructor(props) {
@@ -9,17 +12,41 @@ class SearchBook extends Component {
     };
   }
 
+  searchBooks = (query) => {
+    BooksAPI.search(query, 20).then((books) => {
+      this.setState({ books });
+    });
+  }
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    const formValues = serializeForm(event.target, { hash: true });
+    this.searchBooks(formValues.searchQuery);
+  }
+
   render() {
     return (
       <div className="search-books">
         <div className="search-books-bar">
           <Link className="close-search" to="/">Close</Link>
-          <div className="search-books-input-wrapper">
-            <input type="text" placeholder="Search by title or author" />
-          </div>
+          <form onSubmit={this.handleSubmit} className="search-books-input-wrapper">
+            <input
+              type="text"
+              placeholder="Search by title or author"
+              name="searchQuery"
+            />
+          </form>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid"></ol>
+          <ol className="books-grid">
+            {this.state.books.map(book => (
+              <li key={book.id}>
+                <Book
+                  book={book}
+                />
+              </li>
+            ))}
+          </ol>
         </div>
       </div>
     );
