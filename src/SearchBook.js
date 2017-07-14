@@ -24,6 +24,10 @@ class SearchBook extends Component {
     this.searchBooks(formValues.searchQuery);
   }
 
+  updateBookShelf = (book, shelf) => {
+    BooksAPI.update(book, shelf);
+  }
+
   render() {
     return (
       <div className="search-books">
@@ -43,6 +47,7 @@ class SearchBook extends Component {
               <li key={book.id}>
                 <Book
                   book={book}
+                  onUpdateBookShelf={this.updateBookShelf}
                 />
               </li>
             ))}

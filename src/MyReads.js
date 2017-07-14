@@ -17,6 +17,11 @@ class MyReads extends Component {
     });
   }
 
+  updateBookShelf = (book, shelf) => {
+    BooksAPI.update(book, shelf)
+      .then(BooksAPI.getAll().then((books) => { this.setState({ books }); }));
+  }
+
   render() {
     return (
       <div className="list-books">
@@ -33,6 +38,7 @@ class MyReads extends Component {
                     <li key={book.id}>
                       <Book
                         book={book}
+                        onUpdateBookShelf={this.updateBookShelf}
                       />
                     </li>
                   ))}
@@ -47,6 +53,7 @@ class MyReads extends Component {
                     <li key={book.id}>
                       <Book
                         book={book}
+                        onUpdateBookShelf={this.updateBookShelf}
                       />
                     </li>
                   ))}
@@ -61,6 +68,7 @@ class MyReads extends Component {
                     <li key={book.id}>
                       <Book
                         book={book}
+                        onUpdateBookShelf={this.updateBookShelf}
                       />
                     </li>
                   ))}
