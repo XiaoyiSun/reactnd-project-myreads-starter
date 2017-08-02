@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import serializeForm from 'form-serialize';
+import PropTypes from 'prop-types';
 import Book from './Book';
 import * as BooksAPI from './BooksAPI';
 
@@ -14,7 +15,10 @@ class SearchBook extends Component {
 
   searchBooks = (query) => {
     BooksAPI.search(query, 20).then((books) => {
-      this.setState({ books });
+      const booksOnMyReads = books.filter(book => !this.props.myBooks.some(b => b.id === book.id));
+      const booksNotOnMyReads = this.props.myBooks.filter(book => books.some(b => b.id === book.id));
+
+      this.setState({ books: [...booksOnMyReads, ...booksNotOnMyReads] });
     });
   }
 
@@ -22,10 +26,6 @@ class SearchBook extends Component {
     event.preventDefault();
     const formValues = serializeForm(event.target, { hash: true });
     this.searchBooks(formValues.searchQuery);
-  }
-
-  updateBookShelf = (book, shelf) => {
-    BooksAPI.update(book, shelf);
   }
 
   render() {
@@ -47,7 +47,7 @@ class SearchBook extends Component {
               <li key={book.id}>
                 <Book
                   book={book}
-                  onUpdateBookShelf={this.updateBookShelf}
+                  onUpdateBookShelf={this.props.updateBookShelf}
                 />
               </li>
             ))}
@@ -57,5 +57,10 @@ class SearchBook extends Component {
     );
   }
 }
+
+SearchBook.propTypes = {
+  myBooks: PropTypes.array.isRequired,
+  updateBookShelf: PropTypes.func.isRequired,
+};
 
 export default SearchBook;

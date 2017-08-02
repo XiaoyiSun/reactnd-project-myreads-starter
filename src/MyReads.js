@@ -1,27 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Book from './Book';
-import * as BooksAPI from './BooksAPI';
 
 class MyReads extends Component {
-  constructor() {
-    super();
-    this.state = {
-      books: [],
-    };
-  }
-
-  componentDidMount() {
-    BooksAPI.getAll().then((books) => {
-      this.setState({ books });
-    });
-  }
-
-  updateBookShelf = (book, shelf) => {
-    BooksAPI.update(book, shelf)
-      .then(BooksAPI.getAll().then((books) => { this.setState({ books }); }));
-  }
-
   render() {
     return (
       <div className="list-books">
@@ -34,11 +16,11 @@ class MyReads extends Component {
               <h2 className="bookshelf-title">Currently Reading</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  {this.state.books.filter(book => book.shelf === 'currentlyReading').map(book => (
+                  {this.props.books.filter(book => book.shelf === 'currentlyReading').map(book => (
                     <li key={book.id}>
                       <Book
                         book={book}
-                        onUpdateBookShelf={this.updateBookShelf}
+                        onUpdateBookShelf={this.props.updateBookShelf}
                       />
                     </li>
                   ))}
@@ -49,11 +31,11 @@ class MyReads extends Component {
               <h2 className="bookshelf-title">Want to Read</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  {this.state.books.filter(book => book.shelf === 'wantToRead').map(book => (
+                  {this.props.books.filter(book => book.shelf === 'wantToRead').map(book => (
                     <li key={book.id}>
                       <Book
                         book={book}
-                        onUpdateBookShelf={this.updateBookShelf}
+                        onUpdateBookShelf={this.props.updateBookShelf}
                       />
                     </li>
                   ))}
@@ -64,11 +46,11 @@ class MyReads extends Component {
               <h2 className="bookshelf-title">Read</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  {this.state.books.filter(book => book.shelf === 'read').map(book => (
+                  {this.props.books.filter(book => book.shelf === 'read').map(book => (
                     <li key={book.id}>
                       <Book
                         book={book}
-                        onUpdateBookShelf={this.updateBookShelf}
+                        onUpdateBookShelf={this.props.updateBookShelf}
                       />
                     </li>
                   ))}
@@ -84,5 +66,10 @@ class MyReads extends Component {
     );
   }
 }
+
+MyReads.propTypes = {
+  books: PropTypes.array.isRequired,
+  updateBookShelf: PropTypes.func.isRequired,
+};
 
 export default MyReads;
