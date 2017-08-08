@@ -19,7 +19,7 @@ const Book = ({ book, onUpdateBookShelf }) => (
       </div>
     </div>
     <div className="book-title">{book.title}</div>
-    <div className="book-authors">{book.authors.length ? book.authors.join(', ') : book.author}</div>
+    <div className="book-authors">{book.authors ? book.authors.join(', ') : book.author}</div>
   </div>
 );
 
