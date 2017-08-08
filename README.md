@@ -62,3 +62,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Installation
+Please navigate to the project folder and run 'npm install' to install all needed packages for this project.
+
+## Start the app
+After installing all packages, run 'npm run start' to start the app.
